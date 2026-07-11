@@ -195,6 +195,18 @@ struct KAWAIIPHYSICS_API FAnimNode_KawaiiPhysics : public FAnimNode_SkeletalCont
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physics Settings", meta = (PinHiddenByDefault))
 	float TeleportRotationThreshold = 10.0f;
 
+	/**
+	* Ignore incoming ETeleportType::TeleportPhysics resets (both the engine-injected ones and this node's own
+	* distance/rotation thresholds). Use when the owning pawn emits spurious per-frame teleports (e.g. GMC
+	* prediction double pose-tick + mesh smoothing) that would otherwise reset the sim every frame. A genuine
+	* ResetPhysics (full reset) is still honored.
+	*
+	* Fork default is true: this fork feeds GMC pawns that emit per-frame TeleportPhysics. Set false on a node
+	* whose pawn should honor physics teleports.
+	*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physics Settings", meta = (PinHiddenByDefault))
+	bool bIgnoreTeleportPhysics = true;
+
 	/** 
 	* 指定した軸に応じた平面上に各ボーンを固定
 	* Fix the bone on the specified plane 

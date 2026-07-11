@@ -581,16 +581,19 @@ void FAnimNode_KawaiiPhysics::UpdateSkelCompMove(FComponentSpacePoseContext& Out
 	SkelCompMoveVector *= SkelCompMoveScale;
 	SkelCompMoveRotation = ComponentTransform.InverseTransformRotation(PreSkelCompTransform.GetRotation());
 
-	if (TeleportDistanceThreshold > 0 &&
-		SkelCompMoveVector.SizeSquared() > TeleportDistanceThreshold * TeleportDistanceThreshold)
+	if (bIgnoreTeleportPhysics == false)
 	{
-		TeleportType = ETeleportType::TeleportPhysics;
-	}
+		if (TeleportDistanceThreshold > 0 &&
+			SkelCompMoveVector.SizeSquared() > TeleportDistanceThreshold * TeleportDistanceThreshold)
+		{
+			TeleportType = ETeleportType::TeleportPhysics;
+		}
 
-	if (TeleportRotationThreshold > 0 &&
-		FMath::RadiansToDegrees(SkelCompMoveRotation.GetAngle()) > TeleportRotationThreshold)
-	{
-		TeleportType = ETeleportType::TeleportPhysics;
+		if (TeleportRotationThreshold > 0 &&
+			FMath::RadiansToDegrees(SkelCompMoveRotation.GetAngle()) > TeleportRotationThreshold)
+		{
+			TeleportType = ETeleportType::TeleportPhysics;
+		}
 	}
 }
 

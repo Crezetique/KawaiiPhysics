@@ -228,6 +228,12 @@ void FAnimNode_KawaiiPhysics::CacheBones_AnyThread(const FAnimationCacheBonesCon
 
 void FAnimNode_KawaiiPhysics::ResetDynamics(ETeleportType InTeleportType)
 {
+	// Drop spurious per-frame physics teleports (still honor a genuine full ResetPhysics).
+	if (bIgnoreTeleportPhysics && InTeleportType == ETeleportType::TeleportPhysics)
+	{
+		return;
+	}
+
 	TeleportType = InTeleportType;
 	if (bUseWarmUpWhenResetDynamics)
 	{
